@@ -18,6 +18,7 @@ public class Taxonomy {
   private byte[] image;
 
   @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false, unique = true)
   private User user;
 
   @ManyToOne

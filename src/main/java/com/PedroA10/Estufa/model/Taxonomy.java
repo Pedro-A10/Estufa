@@ -3,10 +3,12 @@ package com.PedroA10.Estufa.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Taxonomy {
 
   @Id
@@ -18,7 +20,7 @@ public class Taxonomy {
   private byte[] image;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false, unique = true)
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
   @ManyToOne

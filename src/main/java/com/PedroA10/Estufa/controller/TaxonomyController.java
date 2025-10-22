@@ -1,9 +1,8 @@
 package com.PedroA10.Estufa.controller;
 
-import com.PedroA10.Estufa.model.Taxonomy;
-import com.PedroA10.Estufa.model.User;
+import com.PedroA10.Estufa.dto.taxondto.TaxonRequestDTO;
+import com.PedroA10.Estufa.dto.taxondto.TaxonResponseDTO;
 import com.PedroA10.Estufa.service.TaxonomyService;
-import com.PedroA10.Estufa.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/taxon")
@@ -21,26 +19,30 @@ public class TaxonomyController {
   @Autowired
   TaxonomyService taxonomyService;
 
-  @Autowired
-  private UserService userService;
-
   @GetMapping
-  public List<Taxonomy> listTaxon() {
+  public List<TaxonResponseDTO> listTaxon() {
     return taxonomyService.findAll();
   }
 
-  @GetMapping
-  public Optional<Taxonomy> listTaxonById(@PathVariable Long id) {
-    return taxonomyService.findById(id);
+  @GetMapping("/{id}")
+  public ResponseEntity<TaxonResponseDTO> listTaxonById(@PathVariable Long id) {
+    return taxonomyService.findById(id)
+      .map(ResponseEntity::ok)
+      .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
-  public ResponseEntity<Taxonomy> createTaxon(@RequestBody @Valid Taxonomy taxonomy) {
-    Taxonomy newTaxon = taxonomyService.createTaxon(taxonomy);
-    return new ResponseEntity<>(newTaxon, HttpStatus.CREATED);
+  public ResponseEntity<TaxonResponseDTO> createTaxon(@RequestBody @Valid TaxonRequestDTO taxonRequestDTO) {
+    try {
+      TaxonResponseDTO newTaxon = taxonomyService.createTaxon(taxonRequestDTO);
+      return new ResponseEntity<>(newTaxon, HttpStatus.CREATED);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
-  @DeleteMapping("{/id}")
+
+  @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteTaxon(@PathVariable Long id) {
     try {
       taxonomyService.deleteTaxonById(id);

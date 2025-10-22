@@ -25,7 +25,7 @@ public class TaxonMapper {
     return dto;
   }
 
-  private static Taxonomy toModel(TaxonRequestDTO dto, User user, Greenhouse greenhouse) {
+  public static Taxonomy toModel(TaxonRequestDTO dto, User user, Greenhouse greenhouse) {
     if (dto == null) return null;
 
     Taxonomy taxonomy = new Taxonomy();

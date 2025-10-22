@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface GreenhouseRepository extends JpaRepository<Greenhouse, Long> {
 
-  Optional<List<Greenhouse>> findByUserUsername(String username);
+  Optional<Greenhouse> findByUserUsername(String username);
 
   @Query("SELECT g FROM Greenhouse g WHERE g.isPrivate = false")
   List<Greenhouse> listGreenhousePublic();

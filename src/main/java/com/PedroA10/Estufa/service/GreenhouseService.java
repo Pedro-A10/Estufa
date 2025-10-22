@@ -25,7 +25,7 @@ public class GreenhouseService {
     return greenhouseRepository.findById(id);
   }
 
-  public Optional<List<Greenhouse>> findByUsername(String username) {
+  public Optional<Greenhouse> findByUsername(String username) {
     return greenhouseRepository.findByUserUsername(username);
   }
 

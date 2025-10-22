@@ -26,7 +26,7 @@ public class UserController {
   @GetMapping("/{id}")
   public ResponseEntity<UserResponseDTO> listUserById(@PathVariable Long id){
     return userService.findById(id)
-      .map(ResponseEntity:: ok)
+      .map(ResponseEntity::ok)
       .orElse(ResponseEntity.notFound().build());
   }
 

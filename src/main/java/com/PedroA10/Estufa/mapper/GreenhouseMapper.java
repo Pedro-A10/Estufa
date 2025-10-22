@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class GreenhouseMapper {
 
-  private static GreenhouseResponseDto toDto(Greenhouse greenhouse) {
+  public static GreenhouseResponseDto toDto(Greenhouse greenhouse) {
     GreenhouseResponseDto dto = new GreenhouseResponseDto();
     dto.setId(greenhouse.getId());
 

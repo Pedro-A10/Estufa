@@ -36,7 +36,7 @@ public class UserService {
     
     public Optional<UserResponseDTO> findById(Long id) {
       return userRepository.findById(id)
-        .map(UserMapper :: toDto);
+        .map(UserMapper::toDto);
     }
 
     public void deleteById(Long id) {

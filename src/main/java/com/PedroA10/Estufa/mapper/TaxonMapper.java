@@ -10,7 +10,7 @@ import java.util.Base64;
 
 public class TaxonMapper {
 
-  private static TaxonResponseDTO toDto (Taxonomy taxon) {
+  public static TaxonResponseDTO toDto(Taxonomy taxon) {
     if (taxon == null) return null;
 
     TaxonResponseDTO dto = new TaxonResponseDTO();

@@ -1,6 +1,8 @@
 package com.PedroA10.Estufa.config;
 
+import com.PedroA10.Estufa.security.JWTFilter;
 import com.PedroA10.Estufa.utils.ApplicationConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,9 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+  @Autowired
+  private JWTFilter jwtFilter;
 
   @Bean
   public PasswordEncoder passwordEncoder() {

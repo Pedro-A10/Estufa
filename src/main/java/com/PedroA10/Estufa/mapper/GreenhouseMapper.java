@@ -1,7 +1,7 @@
 package com.PedroA10.Estufa.mapper;
 
-import com.PedroA10.Estufa.dto.greenhousedto.GreenhouseRequestDto;
-import com.PedroA10.Estufa.dto.greenhousedto.GreenhouseResponseDto;
+import com.PedroA10.Estufa.dto.greenhousedto.GreenhouseRequestDTO;
+import com.PedroA10.Estufa.dto.greenhousedto.GreenhouseResponseDTO;
 import com.PedroA10.Estufa.dto.taxondto.TaxonResponseDTO;
 import com.PedroA10.Estufa.model.Greenhouse;
 import com.PedroA10.Estufa.model.User;
@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class GreenhouseMapper {
 
-  public static GreenhouseResponseDto toDto(Greenhouse greenhouse) {
-    GreenhouseResponseDto dto = new GreenhouseResponseDto();
+  public static GreenhouseResponseDTO toDto(Greenhouse greenhouse) {
+    GreenhouseResponseDTO dto = new GreenhouseResponseDTO();
     dto.setId(greenhouse.getId());
 
     if (greenhouse.getUser() != null) {
@@ -30,7 +30,7 @@ public class GreenhouseMapper {
     return dto;
   }
 
-  private static Greenhouse toModel(GreenhouseRequestDto dto, User user) {
+  private static Greenhouse toModel(GreenhouseRequestDTO dto, User user) {
     Greenhouse greenhouse = new Greenhouse();
 
     greenhouse.setUser(user);

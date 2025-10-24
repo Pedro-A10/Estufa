@@ -1,6 +1,6 @@
 package com.PedroA10.Estufa.controller;
 
-import com.PedroA10.Estufa.dto.greenhousedto.GreenhouseResponseDto;
+import com.PedroA10.Estufa.dto.greenhousedto.GreenhouseResponseDTO;
 import com.PedroA10.Estufa.service.GreenhouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,12 @@ public class GreenhouseController {
   GreenhouseService greenhouseService;
 
   @GetMapping
-  public List<GreenhouseResponseDto> listGreenHouse() {
+  public List<GreenhouseResponseDTO> listGreenHouse() {
     return greenhouseService.findAll();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<GreenhouseResponseDto> listGreenHouseById(@PathVariable Long id) {
+  public ResponseEntity<GreenhouseResponseDTO> listGreenHouseById(@PathVariable Long id) {
     return greenhouseService.findById(id)
       .map(ResponseEntity::ok)
       .orElse(ResponseEntity.notFound().build());

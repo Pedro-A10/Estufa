@@ -18,8 +18,9 @@ public class JWTService {
   private final SecretKey jwtKey;
 
   public JWTService(@Value("${jwt.secret}") String jwtSecret) {
-    this.jwtKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
+    this.jwtKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
   }
+
 
   public String extractUsername(String token) {
     Claims claims = extractALLClaims(token);

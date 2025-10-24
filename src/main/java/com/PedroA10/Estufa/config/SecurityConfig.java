@@ -1,8 +1,9 @@
 package com.PedroA10.Estufa.config;
 
 import com.PedroA10.Estufa.security.JWTFilter;
+import com.PedroA10.Estufa.security.JWTService;
+import com.PedroA10.Estufa.service.CustomUserDetailsService;
 import com.PedroA10.Estufa.utils.ApplicationConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,8 +26,18 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  @Autowired
-  private JWTFilter jwtFilter;
+  private final CustomUserDetailsService customUserDetailsService;
+  private final JWTService jwtService;
+
+  public SecurityConfig(CustomUserDetailsService customUserDetailsService, JWTService jwtService) {
+    this.customUserDetailsService = customUserDetailsService;
+    this.jwtService = jwtService;
+  }
+
+  @Bean
+  public JWTFilter jwtFilter() {
+    return new JWTFilter(customUserDetailsService, jwtService);
+  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -36,18 +46,17 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(AbstractHttpConfigurer::disable)
-      .authorizeHttpRequests(auth -> auth //Configure endpoint authorization
-        .requestMatchers(ApplicationConstants.PUBLIC_URLS).permitAll() //Public URLs that do not require authentication
-        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() //Endpoints Swagger liberados
-        // Example role-based endpoints
+    http.csrf(csrf -> csrf.disable())
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers(ApplicationConstants.PUBLIC_URLS).permitAll()
+        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/test/public/hello/**").hasAnyRole("USER", "ADMIN")
         .requestMatchers("/api/test/private/**").hasRole("ADMIN")
-
         .anyRequest().authenticated()
       )
-      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //Use stateless session (JWT)
-      .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); //Add JWT filter before UsernamePasswordAuthenticationFilter
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+
     return http.build();
   }
 
@@ -64,7 +73,6 @@ public class SecurityConfig {
     return source;
   }
 
-   //AuthenticationManager bean for authentication purposes
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration auth) throws Exception {
     return auth.getAuthenticationManager();

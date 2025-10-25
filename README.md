@@ -2,7 +2,7 @@
 
 ---
 
-Descrição
+##Descrição
 
 O projeto **Estufa** é uma aplicação desenvolvida em Java, organizada com o uso do Maven para gerenciamento de dependências e construção do projeto. O repositório contém a estrutura básica para o desenvolvimento de aplicações Java, incluindo arquivos de configuração essenciais.
 ---
